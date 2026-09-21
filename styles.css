@@ -1,0 +1,153 @@
+.videoannotation-header {
+    align-items: flex-start;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.videoannotation-header__actions,
+.videoannotation-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+}
+
+.videoannotation-layout,
+.videoannotation-report-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: minmax(0, 2fr) minmax(18rem, 1fr);
+}
+
+.videoannotation-player {
+    background: #111;
+    border-radius: .5rem;
+    overflow: hidden;
+    position: relative;
+    width: 100%;
+}
+
+.videoannotation-player__video,
+.videoannotation-player__embed,
+.videoannotation-player__embed iframe {
+    aspect-ratio: 16 / 9;
+    display: block;
+    min-height: 16rem;
+    width: 100%;
+}
+
+.videoannotation-toolbar {
+    margin-top: 1rem;
+}
+
+.videoannotation-editor,
+.videoannotation-panel,
+.videoannotation-progress {
+    background: var(--bs-body-bg, #fff);
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: .5rem;
+    margin-top: 1rem;
+    padding: 1rem;
+}
+
+.videoannotation-sidebar .videoannotation-panel:first-child {
+    margin-top: 0;
+}
+
+.videoannotation-prompt,
+.videoannotation-note,
+.videoannotation-manage-item {
+    border-bottom: 1px solid var(--bs-border-color, #dee2e6);
+    padding: .75rem 0;
+}
+
+.videoannotation-prompt:last-child,
+.videoannotation-note:last-child,
+.videoannotation-manage-item:last-child {
+    border-bottom: 0;
+}
+
+.videoannotation-prompt.is-answered {
+    opacity: .82;
+}
+
+.videoannotation-note__meta,
+.videoannotation-manage-item {
+    align-items: center;
+    display: flex;
+    gap: .5rem;
+    justify-content: space-between;
+}
+
+.videoannotation-note__content {
+    margin-top: .35rem;
+    overflow-wrap: anywhere;
+}
+
+.videoannotation-time {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.videoannotation-watch-timeline {
+    background: var(--bs-secondary-bg, #e9ecef);
+    border-radius: 999px;
+    height: .5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.videoannotation-watch-timeline__segment {
+    background: var(--bs-success, #198754);
+    bottom: 0;
+    position: absolute;
+    top: 0;
+}
+
+.videoannotation-heatmap {
+    align-items: end;
+    display: flex;
+    gap: 2px;
+    height: 9rem;
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.videoannotation-heatmap__bar {
+    background: var(--bs-primary, #0d6efd);
+    border: 0;
+    border-radius: 2px 2px 0 0;
+    flex: 1 1 0;
+    min-height: 2px;
+    opacity: .8;
+    padding: 0;
+}
+
+.videoannotation-heatmap__bar:hover,
+.videoannotation-heatmap__bar:focus {
+    opacity: 1;
+}
+
+.videoannotation-manage-grid {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@media (max-width: 900px) {
+    .videoannotation-layout,
+    .videoannotation-report-grid,
+    .videoannotation-manage-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .videoannotation-header {
+        display: block;
+    }
+
+    .videoannotation-header__actions {
+        margin-top: .75rem;
+    }
+}

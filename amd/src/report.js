@@ -1,0 +1,50 @@
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
+/**
+ * Player controller for the teacher report.
+ *
+ * @module     mod_videoannotation/report
+ * @package   mod_videoannotation
+ * @copyright  2026 Eduardo Kraus
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+
+define(['core/notification', 'mod_videoannotation/player'], function (Notification, Player) {
+    const init = () => {
+        document.querySelectorAll('[data-region="videoannotation-report"]').forEach((root) => {
+            let config;
+            try {
+                config = JSON.parse(root.dataset.config || '{}');
+            } catch (error) {
+                Notification.exception(error);
+                return;
+            }
+            Player.create(root, config.player).then((player) => {
+                root.querySelectorAll('[data-action="seek"]').forEach((button) => {
+                    button.addEventListener('click', () => {
+                        player.seek(Number(button.dataset.time || 0));
+                        root.querySelector('[data-region="player-container"]')?.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'center',
+                        });
+                    });
+                });
+            }).catch((error) => Notification.exception(error));
+        });
+    };
+
+    return {init: init};
+});

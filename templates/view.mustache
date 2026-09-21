@@ -1,0 +1,207 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_videoannotation/view
+}}
+<div class="videoannotation-view" data-region="videoannotation" data-config="{{configjson}}">
+    <header class="videoannotation-header">
+        <div>
+            <h2>{{name}}</h2>
+        </div>
+        <div class="videoannotation-header__actions">
+            {{#canviewreport}}
+                <a class="btn btn-outline-primary" href="{{{reporturl}}}">{{#str}}
+                    viewreport, videoannotation{{/str}}</a>
+            {{/canviewreport}}
+            {{#canmanage}}
+                <a class="btn btn-outline-secondary" href="{{{manageurl}}}">{{#str}}manage, videoannotation{{/str}}</a>
+            {{/canmanage}}
+        </div>
+    </header>
+
+    {{#hasintro}}
+        <div class="videoannotation-intro">{{{intro}}}</div>
+    {{/hasintro}}
+
+    <div class="videoannotation-layout">
+        <main class="videoannotation-main">
+            {{> mod_videoannotation/player}}
+
+            {{#canannotate}}
+                <div class="videoannotation-toolbar" aria-label="{{#str}}annotations, videoannotation{{/str}}">
+                    <button type="button" class="btn btn-primary" data-action="add-annotation">
+                        {{#str}}addannotation, videoannotation{{/str}}
+                    </button>
+                    <button type="button" class="btn btn-outline-primary" data-action="interval" data-state="idle">
+                        {{#str}}startinterval, videoannotation{{/str}}
+                    </button>
+                </div>
+            {{/canannotate}}
+
+            {{#canannotate}}
+                <section class="videoannotation-editor d-none" data-region="annotation-editor" aria-live="polite">
+                    <h3>{{#str}}annotation, videoannotation{{/str}}</h3>
+                    <p class="videoannotation-editor__time" data-region="editor-time"></p>
+                    <input type="hidden" data-field="annotationid" value="0">
+                    <input type="hidden" data-field="promptid" value="0">
+                    <input type="hidden" data-field="starttime" value="0">
+                    <input type="hidden" data-field="endtime" value="-1">
+                    <div class="mb-3">
+                        <label class="form-label" for="videoannotation-category">{{#str}}
+                            annotationcategory, videoannotation{{/str}}</label>
+                        <select class="form-select" id="videoannotation-category" data-field="categoryid">
+                            {{#categories}}
+                                <option value="{{id}}">{{name}}</option>
+                            {{/categories}}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="videoannotation-text">{{#str}}
+                            annotationtext, videoannotation{{/str}}</label>
+                        <textarea class="form-control" id="videoannotation-text" rows="4"
+                                  data-field="content"></textarea>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-primary" data-action="save-annotation">
+                            {{#str}}saveannotation, videoannotation{{/str}}
+                        </button>
+                        <button type="button" class="btn btn-secondary" data-action="cancel-editor">
+                            {{#str}}cancel{{/str}}
+                        </button>
+                    </div>
+                </section>
+            {{/canannotate}}
+
+            <section class="videoannotation-progress" aria-label="{{#str}}progress, videoannotation{{/str}}">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <strong>{{#str}}progress, videoannotation{{/str}}</strong>
+                    <span data-region="percent">{{progress.percentrounded}}%</span>
+                </div>
+                <div class="progress mb-2" role="progressbar" aria-valuemin="0" aria-valuemax="100"
+                     aria-valuenow="{{progress.percentrounded}}">
+                    <div class="progress-bar" data-region="progress-bar" style="width: {{progress.percent}}%"></div>
+                </div>
+                <div class="small text-muted" data-region="watched-duration">{{progress.watchedofduration}}</div>
+                <div class="videoannotation-watch-timeline mt-2" aria-hidden="true">
+                    {{#progress.timeline}}
+                        <span class="videoannotation-watch-timeline__segment" style="left: {{left}}%; width: {{width}}%"
+                              title="{{start}}–{{end}}"></span>
+                    {{/progress.timeline}}
+                </div>
+            </section>
+
+            <div class="alert alert-warning d-none mt-3" data-region="tracking-message" role="status"></div>
+        </main>
+
+        <aside class="videoannotation-sidebar">
+            {{#hasprompts}}
+                <section class="videoannotation-panel">
+                    <h3>{{#str}}prompts, videoannotation{{/str}}</h3>
+                    <div class="videoannotation-prompt-list">
+                        {{#prompts}}
+                            <article class="videoannotation-prompt {{#answered}}is-answered{{/answered}}">
+                                <div class="videoannotation-prompt__question">{{{question}}}</div>
+                                <div class="small text-muted mb-2">
+                                    {{#required}}
+                                        <strong>{{#str}}promptrequired, videoannotation{{/str}}</strong> · {{/required}}
+                                    {{#answered}}{{#str}}promptanswered, videoannotation{{/str}}{{/answered}}
+                                    {{^answered}}{{#str}}promptunanswered, videoannotation{{/str}}{{/answered}}
+                                </div>
+                                {{#canannotate}}
+                                    {{#point}}
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                                data-action="prompt-point"
+                                                data-prompt-id="{{id}}" data-category-id="{{categoryid}}">
+                                            {{#str}}answerprompt, videoannotation{{/str}}
+                                        </button>
+                                    {{/point}}
+                                    {{#interval}}
+                                        <button type="button" class="btn btn-sm btn-outline-primary"
+                                                data-action="prompt-interval"
+                                                data-prompt-id="{{id}}" data-category-id="{{categoryid}}">
+                                            {{#str}}startinterval, videoannotation{{/str}}
+                                        </button>
+                                    {{/interval}}
+                                    {{#either}}
+                                        <div class="d-flex flex-wrap gap-1">
+                                            <button type="button" class="btn btn-sm btn-outline-primary"
+                                                    data-action="prompt-point"
+                                                    data-prompt-id="{{id}}" data-category-id="{{categoryid}}">
+                                                {{#str}}pointannotation, videoannotation{{/str}}
+                                            </button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                                    data-action="prompt-interval"
+                                                    data-prompt-id="{{id}}" data-category-id="{{categoryid}}">
+                                                {{#str}}intervalannotation, videoannotation{{/str}}
+                                            </button>
+                                        </div>
+                                    {{/either}}
+                                {{/canannotate}}
+                            </article>
+                        {{/prompts}}
+                    </div>
+                </section>
+            {{/hasprompts}}
+
+            <section class="videoannotation-panel">
+                <h3>{{notestitle}}</h3>
+                {{#hasnotes}}
+                    <div class="videoannotation-note-list">
+                        {{#notes}}
+                            <article class="videoannotation-note" data-note-id="{{id}}">
+                                <div class="videoannotation-note__meta">
+                                    <button type="button" class="btn btn-link p-0 videoannotation-time"
+                                            data-action="seek" data-time="{{starttime}}">
+                                        {{timecode}}
+                                    </button>
+                                    {{#category}}<span class="badge text-bg-light">{{category}}</span>{{/category}}
+                                </div>
+                                <div class="videoannotation-note__content">{{{content}}}</div>
+                                {{#prompt}}
+                                    <div class="small text-muted mt-1">{{{prompt}}}</div>{{/prompt}}
+                                {{#shared}}
+                                    <div class="small text-muted mt-1">{{author}}</div>{{/shared}}
+                                <div class="d-flex gap-2">
+                                    {{#canedit}}
+                                        <button type="button" class="btn btn-sm btn-link px-0"
+                                                data-action="edit-annotation"
+                                                data-id="{{id}}" data-prompt-id="{{promptid}}"
+                                                data-category-id="{{categoryid}}"
+                                                data-start="{{starttime}}"
+                                                data-end="{{#isinterval}}{{endtime}}{{/isinterval}}{{^isinterval}}-1{{/isinterval}}"
+                                                data-content="{{contentraw}}">
+                                            {{#str}}editannotation, videoannotation{{/str}}
+                                        </button>
+                                    {{/canedit}}
+                                    {{#candelete}}
+                                        <button type="button" class="btn btn-sm btn-link text-danger px-0"
+                                                data-action="delete-annotation" data-id="{{id}}">
+                                            {{#str}}deleteannotation, videoannotation{{/str}}
+                                        </button>
+                                    {{/candelete}}
+                                </div>
+                            </article>
+                        {{/notes}}
+                    </div>
+                {{/hasnotes}}
+                {{^hasnotes}}
+                    <p class="text-muted mb-0">{{#str}}noannotations, videoannotation{{/str}}</p>
+                {{/hasnotes}}
+            </section>
+        </aside>
+    </div>
+</div>

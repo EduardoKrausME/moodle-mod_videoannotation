@@ -1,0 +1,78 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_videoannotation/manage
+}}
+<div class="videoannotation-manage">
+    <header class="videoannotation-header">
+        <div>
+            <h2>{{#str}}manage, videoannotation{{/str}}</h2>
+            <p class="text-muted">{{name}}</p>
+        </div>
+        <a class="btn btn-outline-secondary" href="{{{backurl}}}">{{#str}}back{{/str}}</a>
+    </header>
+
+    <div class="videoannotation-manage-grid">
+        {{#canprompts}}
+            <section class="videoannotation-panel">
+                <h3>{{#str}}manageprompts, videoannotation{{/str}}</h3>
+                {{#hasprompts}}
+                    <div class="videoannotation-manage-list">
+                        {{#prompts}}
+                            <article class="videoannotation-manage-item">
+                                <div>
+                                    <div>{{{question}}}</div>
+                                    <div class="small text-muted">
+                                        {{mode}}{{#category}} · {{category}}{{/category}}
+                                        {{#required}} · {{#str}}promptrequired, videoannotation{{/str}}{{/required}}
+                                    </div>
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <a href="{{{editurl}}}">{{#str}}edit, videoannotation{{/str}}</a>
+                                    <a class="text-danger" href="{{{deleteurl}}}">{{#str}}
+                                        delete, videoannotation{{/str}}</a>
+                                </div>
+                            </article>
+                        {{/prompts}}
+                    </div>
+                {{/hasprompts}}
+                <div class="mt-4">{{{promptform}}}</div>
+            </section>
+        {{/canprompts}}
+
+        {{#cancategories}}
+            <section class="videoannotation-panel">
+                <h3>{{#str}}managecategories, videoannotation{{/str}}</h3>
+                {{#hascategories}}
+                    <div class="videoannotation-manage-list">
+                        {{#categories}}
+                            <article class="videoannotation-manage-item">
+                                <strong>{{name}}</strong>
+                                <div class="d-flex gap-2">
+                                    <a href="{{{editurl}}}">{{#str}}edit, videoannotation{{/str}}</a>
+                                    <a class="text-danger" href="{{{deleteurl}}}">{{#str}}
+                                        delete, videoannotation{{/str}}</a>
+                                </div>
+                            </article>
+                        {{/categories}}
+                    </div>
+                {{/hascategories}}
+                <div class="mt-4">{{{categoryform}}}</div>
+            </section>
+        {{/cancategories}}
+    </div>
+</div>

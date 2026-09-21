@@ -1,0 +1,108 @@
+{{!
+    This file is part of Moodle - https://moodle.org/
+
+    Moodle is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    Moodle is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+}}
+{{!
+    @template mod_videoannotation/report
+}}
+<div class="videoannotation-report" data-region="videoannotation-report" data-config="{{configjson}}">
+    <header class="videoannotation-header">
+        <div>
+            <h2>{{#str}}report, videoannotation{{/str}}</h2>
+            <p class="text-muted">{{name}}</p>
+        </div>
+        <a class="btn btn-outline-secondary" href="{{{backurl}}}">{{#str}}back{{/str}}</a>
+    </header>
+
+    <form method="get" action="{{{formurl}}}" class="d-flex flex-wrap align-items-end gap-2 mb-4">
+        <input type="hidden" name="id" value="{{cmid}}">
+        <div>
+            <label class="form-label" for="videoannotation-report-user">{{#str}}learner, videoannotation{{/str}}</label>
+            <select class="form-select" name="userid" id="videoannotation-report-user">
+                {{#useroptions}}
+                    <option value="{{id}}" {{#selected}}selected{{/selected}}>{{name}}</option>
+                {{/useroptions}}
+            </select>
+        </div>
+        <button class="btn btn-primary" type="submit">{{#str}}filter{{/str}}</button>
+    </form>
+
+    <div class="videoannotation-report-grid">
+        <main>
+            {{> mod_videoannotation/player}}
+
+            <section class="videoannotation-panel mt-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3>{{#str}}aggregate, videoannotation{{/str}}</h3>
+                    <span class="text-muted">{{totalannotations}}</span>
+                </div>
+                <p class="small text-muted">{{#str}}aggregatehelp, videoannotation{{/str}}</p>
+                {{#hasaggregate}}
+                    <div class="videoannotation-heatmap" aria-label="{{#str}}aggregate, videoannotation{{/str}}">
+                        {{#buckets}}
+                            <button type="button" class="videoannotation-heatmap__bar" style="height: {{height}}%"
+                                    data-action="seek" data-time="{{starttime}}" title="{{timecode}} — {{count}}">
+                                <span class="visually-hidden">{{timecode}} — {{count}}</span>
+                            </button>
+                        {{/buckets}}
+                    </div>
+                {{/hasaggregate}}
+                {{^hasaggregate}}
+                    <p class="text-muted">{{#str}}noannotations, videoannotation{{/str}}</p>
+                {{/hasaggregate}}
+            </section>
+
+            {{#hastop}}
+                <section class="videoannotation-panel mt-4">
+                    <h3>{{#str}}mostannotated, videoannotation{{/str}}</h3>
+                    <div class="d-flex flex-wrap gap-2">
+                        {{#top}}
+                            <button type="button" class="btn btn-outline-secondary" data-action="seek"
+                                    data-time="{{starttime}}">
+                                {{timecode}} · {{count}}
+                            </button>
+                        {{/top}}
+                    </div>
+                </section>
+            {{/hastop}}
+        </main>
+
+        <aside class="videoannotation-panel">
+            <h3>{{#str}}annotations, videoannotation{{/str}}</h3>
+            {{#hasnotes}}
+                <div class="videoannotation-note-list">
+                    {{#notes}}
+                        <article class="videoannotation-note">
+                            <div class="videoannotation-note__meta">
+                                <button type="button" class="btn btn-link p-0 videoannotation-time" data-action="seek"
+                                        data-time="{{starttime}}">
+                                    {{timecode}}
+                                </button>
+                                {{#category}}<span class="badge text-bg-light">{{category}}</span>{{/category}}
+                            </div>
+                            <div class="videoannotation-note__content">{{{content}}}</div>
+                            <div class="small text-muted mt-1">{{author}}</div>
+                            {{#prompt}}
+                                <div class="small text-muted mt-1">{{{prompt}}}</div>{{/prompt}}
+                        </article>
+                    {{/notes}}
+                </div>
+            {{/hasnotes}}
+            {{^hasnotes}}
+                <p class="text-muted">{{#str}}noannotations, videoannotation{{/str}}</p>
+            {{/hasnotes}}
+        </aside>
+    </div>
+</div>
