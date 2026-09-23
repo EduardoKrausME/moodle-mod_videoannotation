@@ -46,7 +46,7 @@ class mod_videoannotation_mod_form extends moodleform_mod {
         $mform->addRule('name', null, 'required', null, 'client');
         $this->standard_intro_elements();
 
-        $mform->addElement('header', 'sourceheader', get_string('sourceheader', 'videoannotation'));
+        $mform->addElement('html', '<h3>' . get_string('sourceheader', 'videoannotation') . '</h3>');
         $mform->addElement('select', 'videosource', get_string('videosource', 'videoannotation'), [
             'upload' => get_string('sourceupload', 'videoannotation'),
             'url' => get_string('sourceurl', 'videoannotation'),
@@ -57,7 +57,6 @@ class mod_videoannotation_mod_form extends moodleform_mod {
 
         $mform->addElement('filemanager', 'videofile', get_string('videofile', 'videoannotation'), null, [
             'subdirs' => 0,
-            'maxfiles' => 1,
             'accepted_types' => ['.mp4', '.webm', '.ogv', '.m4v', '.mov', '.m3u8'],
         ]);
         $mform->hideIf('videofile', 'videosource', 'neq', 'upload');
@@ -77,7 +76,7 @@ class mod_videoannotation_mod_form extends moodleform_mod {
         $mform->setType('vimeourl', PARAM_URL);
         $mform->hideIf('vimeourl', 'videosource', 'neq', 'vimeo');
 
-        $mform->addElement('header', 'playbackheader', get_string('playbackheader', 'videoannotation'));
+        $mform->addElement('html', '<h3>' . get_string('playbackheader', 'videoannotation') . '</h3>');
         $mform->addElement('select', 'resumeplayback', get_string('resumeplayback', 'videoannotation'), [
             1 => get_string('resumeautomatic', 'videoannotation'),
             2 => get_string('resumeask', 'videoannotation'),
@@ -94,7 +93,7 @@ class mod_videoannotation_mod_form extends moodleform_mod {
         $mform->addElement('advcheckbox', 'disablepip', get_string('disablepip', 'videoannotation'));
         $mform->addElement('advcheckbox', 'disablecontextmenu', get_string('disablecontextmenu', 'videoannotation'));
 
-        $mform->addElement('header', 'annotationheader', get_string('annotationheader', 'videoannotation'));
+        $mform->addElement('html', '<h3>' . get_string('annotationheader', 'videoannotation') . '</h3>');
         $mform->addElement('select', 'annotationvisibility', get_string('annotationvisibility', 'videoannotation'), [
             'private' => get_string('visibilityprivate', 'videoannotation'),
             'teacher' => get_string('visibilityteacher', 'videoannotation'),
@@ -113,7 +112,7 @@ class mod_videoannotation_mod_form extends moodleform_mod {
      */
     public function add_completion_rules(): array {
         $mform = $this->_form;
-        $mform->addElement('header', 'completionheader', get_string('completionheader', 'videoannotation'));
+        $mform->addElement('html', '<h3>' . get_string('completionheader', 'videoannotation') . '</h3>');
         $mform->addElement('select', 'completionpercent', get_string('completionpercent', 'videoannotation'), [
             10 => '10%', 20 => '20%', 30 => '30%', 40 => '40%', 50 => '50%',
             60 => '60%', 70 => '70%', 80 => '80%', 90 => '90%', 100 => '100%',
@@ -156,6 +155,16 @@ class mod_videoannotation_mod_form extends moodleform_mod {
      */
     public function validation($data, $files): array {
         $errors = parent::validation($data, $files);
-        return $errors + (new source_manager())->validation($data);
+        $errors += (new source_manager())->validation($data);
+        foreach (['videofile'] as $field) {
+            $draftid = (int)($data[$field] ?? 0);
+            if ($draftid > 0) {
+                $draftinfo = file_get_draft_area_info($draftid);
+                if ((int)$draftinfo['filecount'] > 1) {
+                    $errors[$field] = get_string('errormaxfiles', 'videoannotation');
+                }
+            }
+        }
+        return $errors;
     }
 }

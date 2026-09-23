@@ -33,7 +33,7 @@ $PAGE->set_heading(format_string($course->fullname));
 
 $instances = get_all_instances_in_course('videoannotation', $course);
 $table = new html_table();
-$table->head = [get_string('modulename', 'videoannotation'), get_string('intro')];
+$table->head = [get_string('modulename', 'videoannotation'), get_string('description')];
 foreach ($instances as $instance) {
     if (!$instance->visible) {
         continue;
