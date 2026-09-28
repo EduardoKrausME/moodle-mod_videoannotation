@@ -94,7 +94,11 @@ class restore_videoannotation_activity_structure_step extends restore_activity_s
         $this->set_mapping('videoannotation_prompt', $oldid, $data->id);
     }
 
-    /** @param array $data Backup data. @return void */
+    /** 
+     * Function process_videoannotation_note
+     *
+     * @param array $data Backup data. @return void
+     */
     protected function process_videoannotation_note(array $data): void {
         global $DB;
         $data = (object)$data;
