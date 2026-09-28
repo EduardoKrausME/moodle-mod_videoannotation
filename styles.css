@@ -28,7 +28,12 @@
     width: 100%;
 }
 
-.videoannotation-player__video,
+.videoannotation-player__video {
+    display: block;
+    height: auto;
+    width: 100%;
+}
+
 .videoannotation-player__embed,
 .videoannotation-player__embed iframe {
     aspect-ratio: 16 / 9;
