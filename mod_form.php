@@ -24,8 +24,8 @@
 
 use mod_videoannotation\source_manager;
 
-global $CFG;
 defined('MOODLE_INTERNAL') || die;
+global $CFG;
 
 require_once($CFG->dirroot . '/course/moodleform_mod.php');
 
