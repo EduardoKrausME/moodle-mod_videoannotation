@@ -66,7 +66,7 @@ class save_annotation extends external_api {
      * @param string $content Annotation content.
      * @return array
      */
-    public static function execute(int $cmid, int $annotationid, int $promptid, int $categoryid,
+    public static function execute(int   $cmid, int $annotationid, int $promptid, int $categoryid,
                                    float $starttime, float $endtime, string $content): array {
         global $DB, $USER;
         $params = self::validate_parameters(self::execute_parameters(), [

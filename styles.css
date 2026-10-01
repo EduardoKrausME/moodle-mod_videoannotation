@@ -156,6 +156,7 @@
         margin-top: .75rem;
     }
 }
+
 /* Keep generated provider iframes fluid after the YouTube/Vimeo APIs replace their placeholders. */
 .videoannotation-player > iframe {
     display: block;
