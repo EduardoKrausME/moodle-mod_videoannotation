@@ -66,7 +66,7 @@ class update_progress extends external_api {
      * @param string $sessionkey Session key.
      * @return array
      */
-    public static function execute(int   $cmid, float $currentposition, float $duration, float $playbackrate,
+    public static function execute(int $cmid, float $currentposition, float $duration, float $playbackrate,
                                    float $segmentstart, float $segmentend, int $sequence, string $sessionkey): array {
         global $DB, $USER;
         $params = self::validate_parameters(self::execute_parameters(), [
