@@ -2,28 +2,24 @@
 
 `mod_videoannotation` is a Moodle activity that lets learners attach notes to exact moments or intervals of a video.
 
-Students can create point annotations, mark intervals, classify notes, answer teacher-defined annotation prompts, and
-jump back to the referenced moment by clicking an annotation. Teachers can review annotations per learner and use an
-aggregate timeline to identify the most annotated parts of a video.
+## How it works
 
-Bundled video sources:
+Students can create point annotations, mark intervals, classify notes and answer teacher-defined annotation prompts.
+Clicking an annotation returns the player to the referenced moment, so the notes remain connected to the audiovisual
+context instead of becoming a separate discussion.
+
+Teachers can review annotations by learner and use an aggregate timeline to identify the parts of the video that
+generated the most observations.
+
+## Video sources
 
 - protected Moodle upload;
-- direct video/HLS URL;
+- direct video or HLS URL;
 - YouTube;
 - Vimeo.
 
-The activity also tracks watched segments, stores a resume position, exposes completion rules based on watched
-percentage and required prompts, and supports Moodle backup/restore and privacy APIs.
+## Tracking and completion
 
-## Installation
-
-Copy the directory to `mod/videoannotation` and visit Site administration > Notifications.
-
-## Requirements
-
-Moodle 4.4 or newer.
-
-## License
-
-GNU GPL v3 or later.
+The activity tracks watched segments, stores the resume position and can use watched percentage and required prompts as
+completion criteria. It also preserves annotation data through Moodle backup and restore and exposes the stored learner
+data through the Privacy API.
