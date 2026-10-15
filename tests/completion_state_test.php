@@ -26,7 +26,7 @@ namespace mod_videoannotation;
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->dirroot . '/mod/videoannotation/lib.php');
+require_once(__DIR__ . '/../lib.php');
 
 /**
  * Ensures completion checks work even before a learner watches a video.
