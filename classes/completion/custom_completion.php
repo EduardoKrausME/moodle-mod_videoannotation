@@ -46,7 +46,7 @@ class custom_completion extends activity_custom_completion {
             $progress = $DB->get_record('videoannotation_progress', [
                 'videoannotationid' => $activity->id,
                 'userid' => $this->userid,
-            ]);
+            ]) ?: null;
             return (new progress_manager())->percent_complete($activity, $progress)
                 ? COMPLETION_COMPLETE : COMPLETION_INCOMPLETE;
         }
