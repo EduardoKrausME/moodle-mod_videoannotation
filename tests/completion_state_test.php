@@ -34,6 +34,8 @@ require_once(__DIR__ . '/../lib.php');
 final class completion_state_test extends \advanced_testcase {
     /**
      * Missing progress must be incomplete; recorded progress must still be evaluated.
+     *
+     * @covers ::videoannotation_get_completion_state
      */
     public function test_completion_without_and_with_progress(): void {
         global $DB;
