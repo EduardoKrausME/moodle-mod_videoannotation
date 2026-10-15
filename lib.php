@@ -225,7 +225,7 @@ function videoannotation_get_completion_state($course, $cm, int $userid, bool $t
     $progress = $DB->get_record('videoannotation_progress', [
         'videoannotationid' => $activity->id,
         'userid' => $userid,
-    ]);
+    ]) ?: null;
     $complete = (new progress_manager())->percent_complete($activity, $progress);
     if (!empty($activity->completionprompts)) {
         $complete = $complete && (new annotation_manager())->required_prompts_complete($activity->id, $userid);
