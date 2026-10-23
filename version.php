@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+$plugin->version = 2026102300;
+$plugin->release = '1.0.7';
 $plugin->component = 'mod_videoannotation';
-$plugin->version = 2026101200;
-$plugin->release = '1.0.4';
 $plugin->requires = 2024042200;
 $plugin->maturity = MATURITY_STABLE;
